@@ -1,0 +1,33 @@
+{% extends "bsbase.html" %}
+{% block title %} Jobs-JobPortal {% endblock %}
+{% block content %} 
+<br>
+<div class="card border-dark mb-3" style="max-width: 80rem; margin-left: 30px; margin-right: 30px;">
+  <div class="card-header"><h4>Profile Details</h4></div>
+  <div class="card-body text-dark">
+    <form action = "{{ url_for('manageprofile') }}" method = "POST">
+      <div class="form-group">
+        <label for="exampleFormControlInput1">College -</label>
+        <input type="text" class="form-control" name="college" placeholder="Enter your College Name" value = "{{ profile_data[1] }}">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Department - </label>
+        <input type="text" class="form-control" name="dept" placeholder="Enter your Department Name" value = "{{ profile_data[2] }}">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Education Details - </label>
+        <textarea class="form-control" name="education" rows="3" value = "{{ profile_data[3] }}"></textarea>
+      </div>
+        <div class="form-group">
+          <label for="resume">Upload Resume - </label>
+          <input type="file" class="form-control-file" name="resume">
+        </div>
+        <div class="form-group">
+          <input type="submit" value = "Submit" class="btn btn-dark">
+        </div>
+        
+      </form>
+  </div>
+</div>
+
+{% endblock %}

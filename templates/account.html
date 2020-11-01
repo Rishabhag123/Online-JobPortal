@@ -1,0 +1,23 @@
+{% extends "bsbase.html" %}
+{% block title %} Jobs-JobPortal {% endblock %}
+{% block content %}
+<br><h3 class="text-sm-left" style="margin-left:20px;"> Account Details - </h1><br>
+<div class="card mb-3 col-md-7 text-white bg-dark" style="margin-left: 10px;">
+    <div class="row no-gutters">
+        <div class="col-md-3" style="padding-top: 20px; padding-bottom: 20px;">
+            <img src="https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png" class="card-img" alt="profile photo">
+        </div>
+        <div class="col-md-9">
+            <div class="card-body" style="padding-top: 40px;">
+                <h2 class="card-title" style="font-size: 20px;">Name : {{ acc[0][1]}} {{ acc[0][2] }}</h2>
+                <h4 class="card-text" style="font-size: 20px;">Phone Number : {{ acc[0][3] }}</h4>
+                <h4 class="card-text" style="font-size: 20px;">Address : {{ acc[0][4] }}</h4>
+                <h4 class="card-text" style="font-size: 20px;">Email ID : {{ acc[0][5] }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

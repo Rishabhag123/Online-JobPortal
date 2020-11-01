@@ -1,0 +1,64 @@
+{% extends "bsbase.html" %}
+{% block title %} Jobs-JobPortal {% endblock %}>
+{% block content %}
+<!-- Search Jobs -->
+<br>
+<h3 class="text-sm-left" style="margin-left:40px;"> Search For Jobs </h3><br>
+<form method = "POST">
+  <div class="form-row">
+    <div class="col" >
+      <input type="text" class="form-control" style="width:600px; margin-left: 40px;" name = "keyword" placeholder="Keywords (Eg - Job Title / Category / Company )">
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" name = "location" placeholder="Location">
+    </div>
+    <div class="col">
+    <button type="submit" class="btn btn-dark" style="margin-right: 40px;"> Search </button> 
+
+    </div>
+  </div>
+</form>
+<br><br>
+{% for job in alljobs %}
+<div class="card" style="margin: 5px 20px 5px;">
+  <h5 class="card-header">{{ job[0] }}</h5>
+  <div class="card-body">
+    <p class="card-title">Category : {{ job[1] }}</p>
+    <p class="card-text">Company : {{ job[2] }}</p>
+    <p class="card-text">Location : {{ job[3] }}</p>
+    <p class="card-text">Salary : {{ job[4] }}</p>
+    <p class="card-text">Job Description : <br> {{ job[5] }}</p>
+    <form action="{{ url_for('apply') }}" method = "POST">
+      <input type="hidden" name='j_id' value = "{{ job[6] }}">
+      <input type = "submit" id = "apply" value = "Apply" class = "btn btn-dark">
+    </form>
+  </div>
+</div>
+<br>
+{% endfor %}
+ <!-- All jobs -->
+ <!--
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Job Title</th>
+        <th scope="col">Category</th>
+        <th scope="col">Company</th>
+        <th scope="col">Location</th>
+        <th scope="col">Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for job in alljobs %}
+        <tr>
+            <td>{{ job[0] }}</td>
+            <td>{{ job[1] }}</td>
+            <td>{{ job[2] }}</td>
+            <td>{{ job[3] }}</td>
+            <td>{{ job[4] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table> -->
+  
+{% endblock %}

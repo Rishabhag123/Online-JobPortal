@@ -1,0 +1,23 @@
+{% extends 'mybase.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+<table border = 1>
+    {% for seeker in seekerDetails %}
+    <tr>
+        <td>{{ seeker[0] }}</td>
+        <td>{{ seeker[1] }}</td>
+        <td>{{ seeker[2] }}</td>
+        <td>{{ seeker[3] }}</td>
+        <td>{{ seeker[4] }}</td>
+        <td>{{ seeker[5] }}</td>
+        <td>{{ seeker[6] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

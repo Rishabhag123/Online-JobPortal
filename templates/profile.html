@@ -1,0 +1,69 @@
+{% extends "bsbase.html" %}
+{% block title %} Jobs-JobPortal {% endblock %}
+{% block content %} 
+<br>
+<div class="card border-dark mb-3" style="max-width: 80rem; margin-left: 30px; margin-right: 30px;">
+  <div class="card-header"><h4>Profile Details</h4></div>
+  <div class="card-body text-dark">
+
+    <h5 class="card-title">College</h5>
+    {% if profile_details[1] %}
+    <p class="card-text"> {{ profile_details[1] }} </p>
+    {% else %}
+    <p class="card-text"> None </p>
+    {% endif %}
+
+    <h5 class="card-title">Department</h5>
+    {% if profile_details[2] %}
+    <p class="card-text"> {{ profile_details[2] }} </p>
+    {% else %}
+    <p class="card-text"> None </p>
+    {% endif %}
+
+    <h5 class="card-title">Education Details</h5>
+    {% if profile_details[3] %}
+    <p class="card-text"> {{ profile_details[3] }} </p>
+    {% else %}
+    <p class="card-text"> None </p>
+    {% endif %}
+
+    <h5 class="card-title">Resume</h5>
+    {% if resume_details[1] %}
+    <p class="card-text"> {{ resume_details[1] }} </p>
+    {% else %}
+    <p class="card-text"> Not Uploaded </p>
+    {% endif %}
+    <a href="{{url_for('manageprofile')}}" class="btn btn-dark">Manage Profile</a>
+  </div>
+</div>
+
+<br>
+<h3 class="text-sm-left" style="margin-left:30px;"> Applied Jobs - </h3>
+<br> 
+  {% if applied_jobs %}
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Job Title</th>
+        <th scope="col">Category</th>
+        <th scope="col">Company</th>
+        <th scope="col">Location</th>
+        <th scope="col">Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for job in applied_jobs %}
+        <tr>
+            <td>{{ job[0] }}</td>
+            <td>{{ job[1] }}</td>
+            <td>{{ job[2] }}</td>
+            <td>{{ job[3] }}</td>
+            <td>{{ job[4] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="margin-left: 30px; font-size: 20px;">You haven't applied to any jobs yet</p>
+  {% endif %}
+{% endblock %}

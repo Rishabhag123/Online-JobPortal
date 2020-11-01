@@ -1,0 +1,52 @@
+{% extends "bsbase.html" %}
+{% block title %} Jobsearch-JobPortal {% endblock %}
+{% block content %}
+<br>
+<h3 class="text-sm-left" style="margin-left:20px;"> Search Results -  </h3>
+<br>
+{%if jobsearch %}
+{% for job in jobsearch %}
+<div class="card" style="margin: 5px 20px 5px;">
+  <h5 class="card-header">{{ job[0] }}</h5>
+  <div class="card-body">
+    <p class="card-title">Category : {{ job[1] }}</p>
+    <p class="card-text">Company : {{ job[2] }}</p>
+    <p class="card-text">Location : {{ job[3] }}</p>
+    <p class="card-text">Salary : {{ job[4] }}</p>
+    <p class="card-text">Job Description : <br> {{ job[5] }}</p>
+    <form action="{{ url_for('apply') }}" method = "POST">
+      <input type="hidden" name='j_id' value = "{{ job[6] }}">
+      <input type = "submit" value = "Apply" class = "btn btn-dark">
+    </form>
+  </div>
+</div>
+<br>
+{% endfor %}
+{% else %}
+<p style="margin-left: 20px; font-size: 20px;">No search results found</p>
+{% endif %}
+
+<!--
+<table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Job Title</th>
+        <th scope="col">Job Type</th>
+        <th scope="col">Company</th>
+        <th scope="col">Location</th>
+        <th scope="col">Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for job in jobsearch %}
+        <tr>
+            <td>{{ job[0] }}</td>
+            <td>{{ job[1] }}</td>
+            <td>{{ job[2] }}</td>
+            <td>{{ job[3] }}</td>
+            <td>{{ job[4] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table> -->
+{% endblock %}
