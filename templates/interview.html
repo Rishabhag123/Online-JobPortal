@@ -1,0 +1,35 @@
+{% extends "bsbase.html" %}
+{% block title %} Jobs-JobPortal {% endblock %}
+{% block content %}
+<br>
+<h3 class="text-sm-left" style="margin-left:20px;"> Interviews </h3>
+<br>
+{% if schedule %}
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Sr. No. </th>
+        <th scope="col">Job Title</th>
+        <th scope="col">Company </th>
+        <th scope="col">Date </th>
+        <th scope="col">Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% set count = 1 %}
+        {% for interview in schedule %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ interview[1] }}</td>
+            <td>{{ interview[2] }}</td>
+            <td>{{ interview[3] }}</td>
+            <td>{{ interview[4] }}</td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="margin-left: 30px; font-size: 20px;">You do not have any interviews scheduled yet.</p>
+  {% endif %}
+{% endblock %}

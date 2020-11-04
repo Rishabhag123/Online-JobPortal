@@ -38,12 +38,13 @@
 </div>
 
 <br>
-<h3 class="text-sm-left" style="margin-left:30px;"> Applied Jobs - </h3>
+<h3 class="text-sm-left" style="margin-left:30px;"> Applied Jobs </h3>
 <br> 
   {% if applied_jobs %}
   <table class="table">
     <thead class="thead-light">
       <tr>
+        <th scope="col">Sr. No.</th>
         <th scope="col">Job Title</th>
         <th scope="col">Category</th>
         <th scope="col">Company</th>
@@ -54,6 +55,7 @@
     <tbody>
         {% for job in applied_jobs %}
         <tr>
+          <td>{{ loop.index }}</td>
             <td>{{ job[0] }}</td>
             <td>{{ job[1] }}</td>
             <td>{{ job[2] }}</td>

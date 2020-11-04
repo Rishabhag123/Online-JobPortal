@@ -47,12 +47,16 @@ def signup():
         address = userDetails['address']
         email = userDetails['email']
         password = userDetails['password']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO jobseeker(first_name, last_name, phone_number, address, email, password) VALUES (%s, %s, %s, %s, %s, %s)",
-        (fname, lname, phone_num, address, email, password))
-        mysql.connection.commit()
-        cur.close()
-        return redirect('/')
+        cpassword = userDetails['cpassword']
+        if password == cpassword:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO jobseeker(first_name, last_name, phone_number, address, email, password) VALUES (%s, %s, %s, %s, %s, %s)",
+            (fname, lname, phone_num, address, email, password))
+            mysql.connection.commit()
+            cur.close()
+            return redirect('/')
+        else:
+            return redirect('signup')
     return render_template('signup.html')
 
 @app.route('/home', methods = ['GET', 'POST'])
@@ -80,10 +84,14 @@ def profile():
         cur2 = mysql.connection.cursor()
         cur2.execute("SELECT * FROM profile WHERE jobseeker_id = {}".format(user))
         profile_details = cur2.fetchall()
+        if profile_details:
+            profile_details = profile_details[-1]
         cur2.execute("SELECT * FROM resume WHERE jobseeker_id = {}".format(user))
         resume_details = cur2.fetchall()
+        if resume_details:
+            resume_details = resume_details[-1]
         cur2.close()
-        return render_template('profile.html', applied_jobs = applied_jobs, profile_details = profile_details[-1], resume_details = resume_details[-1])
+        return render_template('profile.html', applied_jobs = applied_jobs, profile_details = profile_details, resume_details = resume_details)
     else:
         return redirect(url_for('login'))
 
@@ -178,11 +186,44 @@ def apply():
     else:
         return redirect(url_for('login'))
 
+@app.route('/interviews')
+def interviews():
+    
+    if "user" in session:
+        user = session['user']
+        cur = mysql.connection.cursor()
+        check_apply = cur.execute('SELECT * FROM apply INNER JOIN interview ON (apply.jobseeker_id, apply.job_id) = (interview.jobseeker_id, interview.job_id) WHERE interview.jobseeker_id = {};'.format(user))
+        if check_apply > 0:
+            interview = cur.execute("SELECT interview.jobseeker_id, job.job_title, company.name, interview.date, interview.time FROM \
+            job INNER JOIN company ON job.company_id = company.company_id INNER JOIN interview ON interview.job_id = job.job_id WHERE interview.jobseeker_id = {} AND \
+            interview.job_id IN (SELECT apply.job_id FROM apply INNER JOIN interview ON (apply.jobseeker_id, apply.job_id) = (interview.jobseeker_id, interview.job_id) WHERE interview.jobseeker_id = {});".format(user, user))
+            if interview > 0:
+                schedule = cur.fetchall()
+            else:
+                schedule = None
+        else:
+            schedule = None
+        return render_template('interview.html', schedule=schedule)
+    else:
+        return redirect(url_for('login'))
+
 @app.route('/results')
 def results():
     if "user" in session:
         user = session['user']
-        return render_template('results.html')
+        cur = mysql.connection.cursor()
+        chk_apply = cur.execute('SELECT * FROM apply INNER JOIN result ON (apply.jobseeker_id, apply.job_id) = (result.jobseeker_id, result.job_id) WHERE result.jobseeker_id = {};'.format(user))
+        if chk_apply > 0:
+            r = cur.execute("SELECT result.jobseeker_id, job.job_title, company.name, company.location, result.status FROM \
+            job INNER JOIN company ON job.company_id = company.company_id INNER JOIN result ON result.job_id = job.job_id WHERE result.jobseeker_id = {} AND \
+            result.job_id IN (SELECT apply.job_id FROM apply INNER JOIN result ON (apply.jobseeker_id, apply.job_id) = (result.jobseeker_id, result.job_id) WHERE result.jobseeker_id = {});".format(user, user))
+            if r > 0:   
+                res = cur.fetchall()
+            else:
+                res = None
+        else:
+            res = None
+        return render_template('results.html', res = res)
     else:
         return redirect(url_for('login'))
 
@@ -209,9 +250,28 @@ def account():
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM jobseeker WHERE jobseeker.jobseeker_id = {}'.format(user))
         acc = cur.fetchall()
-        return render_template('account.html', acc = acc)
+        a = cur.execute('SELECT count(job_id) FROM apply GROUP BY jobseeker_id HAVING jobseeker_id  = {};'.format(user))
+        if a > 0:
+            apply = cur.fetchall()
+            apply = apply[0][0]
+        else:
+            apply = 0
+        r = cur.execute('SELECT count(job_id) FROM result GROUP BY jobseeker_id HAVING jobseeker_id = {};'.format(user))
+        if r > 0:
+            res = cur.fetchall()
+            res = res[0][0]
+        else:
+            res = 0
+        i = cur.execute('SELECT count(job_id) FROM interview GROUP BY jobseeker_id HAVING jobseeker_id = {};'.format(user))
+        if i > 0:
+            interview = cur.fetchall()
+            interview = interview[0][0]
+        else:
+            interview = 0
+        return render_template('account.html', acc = acc, apply = apply, res = res, interview = interview)
     else:
         return redirect(url_for("login"))
+
 @app.route('/logout')
 def logout():
     session.pop("user", None)
