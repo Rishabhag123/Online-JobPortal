@@ -1,11 +1,11 @@
 # Online-JobPortal
-I have created an online Job Portal as a part of my DBMS Project
+I have developed an online Job Portal system for job seekers to search and apply for the jobs, view their interview schedules and check results.
 
-ER Diagram - 
+# ER Diagram - 
 
 ![](diagrams/ER.png)
 
-Relational Schema - 
+# Relational Schema - 
 
 ![](diagrams/Relational_Schema.png)
 
