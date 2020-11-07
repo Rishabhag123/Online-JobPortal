@@ -11,7 +11,7 @@ Division - 2
 </pre>
 
 ### Project Description - 
-As more companies are recruiting students for jobs virtually, there is a need for an online Job Portal to connect both job seekers and companies for the recruitment process. The Job Portal application will allow users to search and apply for jobs offered by different companies. Various features like creating and managing profile, uploading resume, checking interview schedules and results would help bridge the gap between job seekers and recruiters.
+As more companies are recruiting students for jobs virtually, especially during the pandemic, there is a need for an online Job Portal to connect both job seekers and companies for the recruitment process. An online Job Portal would help job seekers find jobs that best fit their interests and career pathway and also help companies to reach out to as much candidates as possible for their job vacancies. It can greatly boost a person’s job seeking efforts and company’s hiring process. The Job Portal application will allow users to search and apply for jobs offered by different companies. Various features like creating and managing profile, uploading resume, checking interview schedules and results would help bridge the gap between job seekers and recruiters. The project mainly focuses on database design and its use to implement various functionalities.
 
 ### Technologies Used - 
 <pre>
@@ -60,39 +60,39 @@ python app.py
 
 ![](screenshots/signup.png)
 
-<li>Login </li>
+<li>Login </li><br> 
 
 ![](screenshots/login.png)
 
-<li>Home </li>
+<li>Home </li><br> 
 
 ![](screenshots/home.png)
 
-<li>Profile Details </li>
+<li>Profile Details </li><br> 
 
 ![](screenshots/profile.png)
 
-<li>Manage Profile</li>
+<li>Manage Profile</li><br> 
 
 ![](screenshots/profile2.png)
 
-<li>Jobs </li>
+<li>Jobs </li><br> 
 
 ![](screenshots/jobs.png)
 
-<li>Job Search </li>
+<li>Job Search </li><br> 
 
 ![](screenshots/jobsearch.png)
 
-<li>Interviews </li>
+<li>Interviews </li><br> 
 
 ![](screenshots/interviews.png)
 
-<li>Results </li>
+<li>Results </li><br> 
  
 ![](screenshots/results.png)
 
-<li> Account Details </li>
+<li> Account Details </li><br> 
 
 ![](screenshots/account.png)
 
