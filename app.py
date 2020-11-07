@@ -15,18 +15,20 @@ app.config['MYSQL_DB'] = "jobportal"
 mysql = MySQL(app)
 
 @app.route('/', methods = ['GET', 'POST'])
+# login page
 def login():
     find = 0
     if request.method == 'POST':
+        # retrieving the entries made in the form
         loginDetails = request.form
         email = loginDetails['email']
         password = loginDetails['password']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users(email, password) VALUES (%s, %s)", (email, password))
-        mysql.connection.commit()
+        # selecting email and password attributes from jobseeker entity to check if the email and its password exists in the entity
         find = cur.execute("SELECT * FROM jobseeker WHERE (email, password) = (%s, %s) ", (email, password))
         details = cur.fetchall()
         cur.close()
+    # login to home page if we find such an entry in the table or redirect to the same page
     if find != 0:
         user = details[0][0]
         session["user"] = user
@@ -40,6 +42,7 @@ def login():
 @app.route('/signup', methods = ['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        # retrieving the entries made in the form
         userDetails = request.form
         fname = userDetails['fname']
         lname = userDetails['lname']
@@ -48,12 +51,15 @@ def signup():
         email = userDetails['email']
         password = userDetails['password']
         cpassword = userDetails['cpassword']
+        # checking if the password entered in both the fields are same
         if password == cpassword:
             cur = mysql.connection.cursor()
+            # creating a record by inserting the jobseeker details in jobseeeker entity
             cur.execute("INSERT INTO jobseeker(first_name, last_name, phone_number, address, email, password) VALUES (%s, %s, %s, %s, %s, %s)",
             (fname, lname, phone_num, address, email, password))
             mysql.connection.commit()
             cur.close()
+            # go to login page on submit
             return redirect('/')
         else:
             return redirect('signup')
@@ -64,6 +70,7 @@ def home():
     if "user" in session:
         user = session["user"]
         cur = mysql.connection.cursor()
+        # displaying the name of the jobseeker on the home page who has logged in currently
         cur.execute("SELECT * FROM jobseeker WHERE jobseeker_id = {}".format(user))
         userdet = cur.fetchall()
         name = userdet[0][1]
@@ -76,16 +83,20 @@ def profile():
     if "user" in session:
         user = session['user']
         cur = mysql.connection.cursor()
+        # displaying the job details and corresponding company details of the jobs the user has applied for by using INNER JOIN on 
+        # job and company tables and using subquery for selecting jobs user has applied for from the apply table 
         cur.execute("SELECT job.job_title, job.job_type, company.name, company.location, job.job_salary, \
         job.job_id FROM job INNER JOIN company ON job.company_id = company.company_id WHERE job.job_id in (SELECT job_id FROM apply WHERE \
         jobseeker_id = {})".format(user))
         applied_jobs = cur.fetchall()
         cur.close()
         cur2 = mysql.connection.cursor()
+        # selecting all the profile details of the user from profile table to display in the My Profile section
         cur2.execute("SELECT * FROM profile WHERE jobseeker_id = {}".format(user))
         profile_details = cur2.fetchall()
         if profile_details:
             profile_details = profile_details[-1]
+        # selecting the resume details of the user from resume table
         cur2.execute("SELECT * FROM resume WHERE jobseeker_id = {}".format(user))
         resume_details = cur2.fetchall()
         if resume_details:
@@ -101,6 +112,7 @@ def manageprofile():
         user = session['user']
 
         cur = mysql.connection.cursor()
+        # selecting all profile details for the logged in user
         exist = cur.execute("SELECT * FROM profile WHERE jobseeker_id = {}".format(user))
         profile_data = cur.fetchall()
 
@@ -111,21 +123,27 @@ def manageprofile():
             education = profile['education']
             filename = profile['resume']
             cur = mysql.connection.cursor()
+            # selecting all profile details for the logged in user
             exist = cur.execute("SELECT * FROM profile WHERE jobseeker_id = {}".format(user))
             if exist > 0:
+                # If the profile entry for user exists, then update the profile details in the profile table for that entry using UPDATE clause
                 cur.execute("UPDATE profile SET college = (%s), department = (%s), education = (%s) WHERE jobseeker_id = (%s)", (college, dept, education, user))
                 mysql.connection.commit()
             else:
+                # If the profile entry for that user doesnt exist in the profile table, then insert a record for profile details of that user
                 cur.execute("INSERT INTO profile(college, department, education, jobseeker_id) VALUES (%s, %s, %s, %s)", (college, dept, education, user))
                 mysql.connection.commit()
             cur.close()
 
             cur2 = mysql.connection.cursor()
+            # selecting resume details of the user that is logged in
             res = cur2.execute("SELECT * FROM resume WHERE resume_id = {}".format(user))
             if res > 0:
+                # if the resume entry exists for that user, then update the resume filename for the entry
                 cur2.execute("UPDATE resume SET filename = (%s) WHERE resume_id = (%s)", (filename, user))
                 mysql.connection.commit()
             else:
+                # if the resume entry doesnt exist, then insert a new entry in resume table for that user with the filename
                 cur2.execute("INSERT INTO resume(filename, jobseeker_id) VALUES (%s, %s)", (filename, user))
                 mysql.connection.commit()
             cur2.close()
@@ -142,10 +160,16 @@ def jobs():
             keyword = searchjob['keyword']
             location = searchjob['location']
             cur = mysql.connection.cursor() 
+            # if only keyword is entered in the job search, then select those jobs where the keyword matches the job details
+            #  by using LIKE clause and inner join on jobs and corresponding companies 
             if keyword and (not location):
                 count_search = cur.execute("SELECT job.job_title, job.job_type, company.name, company.location, job.job_salary, job.job_description, job.job_id FROM job INNER JOIN company ON job.company_id = company.company_id WHERE (job.job_title LIKE '%{}%') OR (job.job_type LIKE '%{}%') OR (job.job_description LIKE '%{}%')".format(keyword, keyword, keyword))
+            # if only location is entered in the job search, then select those jobs where the keyword matches the company location
+            #  by using LIKE clause and inner join on jobs and corresponding companies
             elif location and (not keyword):
                 count_search = cur.execute("SELECT job.job_title, job.job_type, company.name, company.location, job.job_salary, job.job_description, job.job_id FROM job INNER JOIN company ON job.company_id = company.company_id WHERE (company.location LIKE '%{}%')".format(location))
+            # if keyword and location are entered in the job search, then select those jobs where the keyword matches the job details
+            # and company location by using LIKE clause and inner join on jobs and corresponding companies
             elif location and keyword:
                 count_search = cur.execute("SELECT job.job_title, job.job_type, company.name, company.location, job.job_salary, job.job_description, job.job_id FROM job INNER JOIN company ON job.company_id = company.company_id WHERE ((job.job_title LIKE '%{}%') OR (job.job_type LIKE '%{}%') OR (job.job_description LIKE '%{}%')) AND (company.location LIKE '%{}%')".format(keyword, keyword, keyword, location))
             else:
@@ -155,6 +179,7 @@ def jobs():
             return render_template('jobsearch.html', jobsearch = jobsearch)
 
         cur = mysql.connection.cursor()
+        # display all jobs and their details by selecting all jobs in the job table and their company using inner join
         count_jobs = cur.execute("SELECT job.job_title, job.job_type, company.name, company.location, job.job_salary, job.job_description, job.job_id FROM job INNER JOIN company ON job.company_id = company.company_id")
         if count_jobs > 0:
             alljobs = cur.fetchall()
@@ -178,8 +203,10 @@ def apply():
             apply = request.form
             jobid = apply['j_id']
             cur = mysql.connection.cursor()
+            # select all the jobs the user has applied for using the apply relation table
             applied = cur.execute("SELECT * FROM apply WHERE (jobseeker_id, job_id) = ({}, {})".format(user, jobid))
             if applied == 0:
+                # if the user has not applied for that job, then insert a record for the user in the apply table for that job
                 cur.execute("INSERT INTO apply VALUES ({}, {})".format(user, jobid))
                 mysql.connection.commit()
         return redirect(url_for('home'))
@@ -192,8 +219,11 @@ def interviews():
     if "user" in session:
         user = session['user']
         cur = mysql.connection.cursor()
+        # select all the interview details for those jobs that the user has applied for by using inner join on apply and interview's job_id
         check_apply = cur.execute('SELECT * FROM apply INNER JOIN interview ON (apply.jobseeker_id, apply.job_id) = (interview.jobseeker_id, interview.job_id) WHERE interview.jobseeker_id = {};'.format(user))
         if check_apply > 0:
+            # select the interview details, its corresponding job and company details by using inner join on job, company and interview
+            # and using subquery to show only those interview schedules for jobs that the jobseeker has applied for
             interview = cur.execute("SELECT interview.jobseeker_id, job.job_title, company.name, interview.date, interview.time FROM \
             job INNER JOIN company ON job.company_id = company.company_id INNER JOIN interview ON interview.job_id = job.job_id WHERE interview.jobseeker_id = {} AND \
             interview.job_id IN (SELECT apply.job_id FROM apply INNER JOIN interview ON (apply.jobseeker_id, apply.job_id) = (interview.jobseeker_id, interview.job_id) WHERE interview.jobseeker_id = {});".format(user, user))
@@ -212,8 +242,11 @@ def results():
     if "user" in session:
         user = session['user']
         cur = mysql.connection.cursor()
+        # select all the results for those jobs that the user has applied for by using inner join on apply and result's job_id
         chk_apply = cur.execute('SELECT * FROM apply INNER JOIN result ON (apply.jobseeker_id, apply.job_id) = (result.jobseeker_id, result.job_id) WHERE result.jobseeker_id = {};'.format(user))
         if chk_apply > 0:
+            # select the result status of the job of a company  by using inner join on job, company and result
+            # and using subquery to show only those results for jobs that the jobseeker has applied for 
             r = cur.execute("SELECT result.jobseeker_id, job.job_title, company.name, company.location, result.status FROM \
             job INNER JOIN company ON job.company_id = company.company_id INNER JOIN result ON result.job_id = job.job_id WHERE result.jobseeker_id = {} AND \
             result.job_id IN (SELECT apply.job_id FROM apply INNER JOIN result ON (apply.jobseeker_id, apply.job_id) = (result.jobseeker_id, result.job_id) WHERE result.jobseeker_id = {});".format(user, user))
@@ -225,19 +258,12 @@ def results():
             res = None
         return render_template('results.html', res = res)
     else:
-        return redirect(url_for('login'))
-
-@app.route('/users')
-def logins():
-    cur = mysql.connection.cursor()
-    count_users = cur.execute("SELECT * FROM users")
-    if count_users > 0:
-        loginDetails = cur.fetchall()
-        return render_template('users.html', loginDetails = loginDetails)   
+        return redirect(url_for('login'))   
 
 @app.route('/jobseekers')
 def seekers():
     cur = mysql.connection.cursor()
+    # Select all the jobseeker details from jobseeker table
     count_users = cur.execute("SELECT * FROM jobseeker")
     if count_users > 0:
         seekerDetails = cur.fetchall()
@@ -248,20 +274,24 @@ def account():
     if "user" in session:
         user = session["user"]
         cur = mysql.connection.cursor()
+        # displaying all jobseeker details by selecting it from jobseeker table
         cur.execute('SELECT * FROM jobseeker WHERE jobseeker.jobseeker_id = {}'.format(user))
         acc = cur.fetchall()
+        # displaying the number of jobs the jobseeker has applied for by using GROUP BY and HAVING cluase along with aggregate function count()
         a = cur.execute('SELECT count(job_id) FROM apply GROUP BY jobseeker_id HAVING jobseeker_id  = {};'.format(user))
         if a > 0:
             apply = cur.fetchall()
             apply = apply[0][0]
         else:
             apply = 0
+        # displaying the number of results declared for jobs that the jobseeker has applied for by using GROUP BY and HAVING cluase along with aggregate function count()
         r = cur.execute('SELECT count(job_id) FROM result GROUP BY jobseeker_id HAVING jobseeker_id = {};'.format(user))
         if r > 0:
             res = cur.fetchall()
             res = res[0][0]
         else:
             res = 0
+        # displaying the number of interviews scheduled for jobs that the jobseeker has applied for by using GROUP BY and HAVING cluase along with aggregate function count()
         i = cur.execute('SELECT count(job_id) FROM interview GROUP BY jobseeker_id HAVING jobseeker_id = {};'.format(user))
         if i > 0:
             interview = cur.fetchall()
