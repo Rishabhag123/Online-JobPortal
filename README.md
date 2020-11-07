@@ -56,7 +56,7 @@ python app.py
 
 ### Web Pages - 
 <ul>
-  <li>Signup</li> 
+  <li>Signup </li> 
 
 ![](screenshots/signup.png)
 
@@ -96,4 +96,4 @@ python app.py
 
 ![](screenshots/account.png)
 
-</ul>
+</li>
