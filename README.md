@@ -11,7 +11,7 @@ Division - 2
 </pre>
 
 ### Project Description - 
-As more companies are recruiting students for jobs virtually, especially during the pandemic, there is a need for an online Job Portal to connect both job seekers and companies for the recruitment process. An online Job Portal would help job seekers find jobs that best fit their interests and career pathway and also help companies to reach out to as much candidates as possible for their job vacancies. It can greatly boost a person’s job seeking efforts and company’s hiring process. The Job Portal application will allow users to search and apply for jobs offered by different companies. Various features like creating and managing profile, uploading resume, checking interview schedules and results would help bridge the gap between job seekers and recruiters. The project mainly focuses on database design and its use to implement various functionalities.
+As more companies are recruiting students for jobs virtually, especially during the pandemic, there is a need for an online Job Portal to connect both job seekers and companies for the recruitment process. The Job Portal would help boost a person’s job seeking efforts and company’s hiring process. The application will allow users to search and apply for jobs offered by different companies. Various features like creating and managing profile, uploading resume, checking interview schedules and results would help bridge the gap between job seekers and recruiters. The project mainly focuses on database design and its use to implement various functionalities.
 
 ### Technologies Used - 
 <pre>
