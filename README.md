@@ -37,7 +37,6 @@ Database - MySQL
 ![](diagrams/Relational_Schema.png)
 
 # Installation Guide - 
-<pre>
 1. Clone the repository
 2. Install Flask and flask-mysqldb using 
 <pre>
