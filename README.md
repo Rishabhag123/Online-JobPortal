@@ -1,6 +1,8 @@
 # Online-JobPortal
 Database Management System Course Project
 
+Hosted on https://github.com/Rishabhag123/Online-JobPortal
+
 <pre>
 Rishabh Agarwal
 MIS - 111807069
@@ -23,12 +25,26 @@ Database - MySQL
   <li>Job seekers will be able to register and login to the portal.</li>
   <li>Job seekers can create and update their academic profile.</li>
   <li>Job seekers would also be able to upload their resume on the website.</li>
-  <li>Job seekers can search and apply for multiple job vacancies offered by various companies. They can see all the details for a particular job on the website.</li>
+  <li>Job seekers can search and apply for multiple job vacancies posted by various companies. They can see all the details for a particular job on the website.</li>
   <li>Job seekers can view all the jobs they have applied for in their profile.</li>
-  <li>Applicants will be able to view their schedule for interviews by companies on the portal.</li>
-  <li>Applicants can see their result status for a particular company’s job profile.</li>
-  <li>Job seekers can also view their account details and account summary</li>
+  <li>Applicants will be able to view their interviews scheduled by companies on the portal.</li>
+  <li>Applicants can see their result status declared by the companies for the jobs they had applied for.</li>
+  <li>Job seekers can also view their account details and account summary.</li>
 </ul>
+
+
+### Installation Guide - 
+1. Clone the repository
+2. Install Flask and flask-mysqldb using - 
+<pre>
+pip install flask
+pip install flask-mysqldb
+</pre>
+3. Run the application using - 
+<pre>
+python app.py
+</pre>
+4. Go to localhost:5000 using your browser
 
 ### ER Diagram - 
 
@@ -38,49 +54,46 @@ Database - MySQL
 
 ![](diagrams/Relational_Schema.png)
 
-### Installation Guide - 
-1. Clone the repository
-2. Install Flask and flask-mysqldb using 
-<pre>
-pip install flask
-pip install flask-mysqldb
-</pre>
-3. Run the application using
-<pre>
-python app.py
-</pre>
-4. Go to localhost:5000 using your browser
-
 ### Web Pages - 
-
-Signup 
+<ul>
+  <li>Signup</li> 
 
 ![](screenshots/signup.png)
 
-Login 
+<li>Login </li>
 
 ![](screenshots/login.png)
 
-Home 
+<li>Home </li>
 
 ![](screenshots/home.png)
 
-Profile Details
+<li>Profile Details </li>
 
 ![](screenshots/profile.png)
 
-Jobs
+<li>Manage Profile</li>
+
+![](screenshots/profile2.png)
+
+<li>Jobs </li>
 
 ![](screenshots/jobs.png)
 
-Interviews
+<li>Job Search </li>
+
+![](screenshots/jobsearch.png)
+
+<li>Interviews </li>
 
 ![](screenshots/interviews.png)
 
-Results
-
+<li>Results </li>
+ 
 ![](screenshots/results.png)
 
-Account Details
+<li> Account Details </li>
 
 ![](screenshots/account.png)
+
+</ul>
