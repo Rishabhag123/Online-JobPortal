@@ -9,7 +9,7 @@ Division - 2
 </pre>
 
 ### Project Description - 
-As more companies are recruiting students for jobs virtually, there is a need for an online Job Portal to connect both job seekers and companies for the recruitment process. The Job Portal application will keep records of the companies and jobseekers and allow users to search and apply for jobs offered by different companies. Various features like creating and managing profile, uploading resume, checking interview schedules and results would help bridge the gap between job seekers and recruiters.
+As more companies are recruiting students for jobs virtually, there is a need for an online Job Portal to connect both job seekers and companies for the recruitment process. The Job Portal application will allow users to search and apply for jobs offered by different companies. Various features like creating and managing profile, uploading resume, checking interview schedules and results would help bridge the gap between job seekers and recruiters.
 
 ### Technologies Used - 
 <pre>
@@ -21,23 +21,24 @@ Database - MySQL
 ### Features - 
 <ul>
   <li>Job seekers will be able to register and login to the portal.</li>
-  <li>Job seekers can create and update their profile by entering their academic details.</li>
+  <li>Job seekers can create and update their academic profile.</li>
   <li>Job seekers would also be able to upload their resume on the website.</li>
   <li>Job seekers can search and apply for multiple job vacancies offered by various companies. They can see all the details for a particular job on the website.</li>
-  <li>Applicants will be able to view their schedule for interviews on the portal.</li>
+  <li>Job seekers can view all the jobs they have applied for in their profile.</li>
+  <li>Applicants will be able to view their schedule for interviews by companies on the portal.</li>
   <li>Applicants can see their result status for a particular company’s job profile.</li>
-  <li>Job seekers can view their account details and account summary</li>
+  <li>Job seekers can also view their account details and account summary</li>
 </ul>
 
-# ER Diagram - 
+### ER Diagram - 
 
 ![](diagrams/ER.png)
 
-# Relational Schema - 
+### Relational Schema - 
 
 ![](diagrams/Relational_Schema.png)
 
-# Installation Guide - 
+### Installation Guide - 
 1. Clone the repository
 2. Install Flask and flask-mysqldb using 
 <pre>
@@ -48,37 +49,38 @@ pip install flask-mysqldb
 <pre>
 python app.py
 </pre>
+4. Go to localhost:5000 using your browser
 
-# Web Pages - 
+### Web Pages - 
 
-1. Signup 
+Signup 
 
 ![](screenshots/signup.png)
 
-2. Login 
+Login 
 
 ![](screenshots/login.png)
 
-3. Home 
+Home 
 
 ![](screenshots/home.png)
 
-4. Profile Details
+Profile Details
 
 ![](screenshots/profile.png)
 
-5. Jobs
+Jobs
 
 ![](screenshots/jobs.png)
 
-6. Interviews
+Interviews
 
 ![](screenshots/interviews.png)
 
-7. Results
+Results
 
 ![](screenshots/results.png)
 
-8. Account Details
+Account Details
 
 ![](screenshots/account.png)
